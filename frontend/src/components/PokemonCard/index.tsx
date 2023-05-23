@@ -10,6 +10,10 @@ import {
   Divider,
   ButtonGroup,
   Image,
+  Box,
+  Center,
+  Input,
+  FormControl,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -23,6 +27,7 @@ interface Pokemon {
 
 const PokemonCard = () => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [searchValue, setSearchValue] = useState("");
 
   async function getPokemons() {
     try {
@@ -57,42 +62,66 @@ const PokemonCard = () => {
     getPokemons();
   }, []);
 
-  // if (pokemons.length === 0) {
-  //   return <div>Loading...</div>;
-  // }
+  const filteredPokemons = pokemons.filter((pokemon) => {
+    const searchLowercase = searchValue.toLowerCase();
+    return (
+      pokemon.name.toLowerCase().includes(searchLowercase) ||
+      pokemon.id.toString().includes(searchLowercase)
+    );
+  });
 
   return (
-    <SimpleGrid
-      spacing={3}
-      templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
-      templateRows="repeat(auto-fill, minmax(300px, 1fr))"
-    >
-      {pokemons.map((pokemon) => (
-        <Card key={pokemon.name} maxW="sm">
-          <CardBody>
-            <Image src={pokemon.image} alt={pokemon.name} borderRadius="lg" />
-            <Stack mt="6" spacing="3">
-              <Text color="blue.600" fontSize="2xl">
-                *{pokemon.id.toString().padStart(3, "0")}
-              </Text>
-              <Heading size="md">{pokemon.name}</Heading>
-              <Text>Type: {pokemon.types.join(", ")}</Text>
-            </Stack>
-          </CardBody>
-          <Divider />
-          <CardFooter>
-            <ButtonGroup spacing="2">
-              <Button variant="solid" colorScheme="blue">
-                Buy now
-              </Button>
-              <Button variant="ghost" colorScheme="blue">
-                Add to cart
-              </Button>
-            </ButtonGroup>
-          </CardFooter>
-        </Card>
-      ))}
-    </SimpleGrid>
+    <>
+      <FormControl mt={100}>
+        <Center>
+          <Box width="900px">
+            <Input
+              placeholder="Pesquise..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
+          </Box>
+        </Center>
+      </FormControl>
+
+      <SimpleGrid
+        spacing={3}
+        templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
+        templateRows="repeat(auto-fill, minmax(300px, 1fr))"
+      >
+        {filteredPokemons.length > 0
+          ? filteredPokemons.map((pokemon) => (
+              <Card key={pokemon.name} maxW="sm">
+                <CardBody>
+                  <Image
+                    src={pokemon.image}
+                    alt={pokemon.name}
+                    borderRadius="lg"
+                  />
+                  <Stack mt="6" spacing="3">
+                    <Text color="blue.600" fontSize="2xl">
+                      *{pokemon.id.toString().padStart(3, "0")}
+                    </Text>
+                    <Heading size="md">{pokemon.name}</Heading>
+                    <Text>Type: {pokemon.types.join(", ")}</Text>
+                  </Stack>
+                </CardBody>
+                <Divider />
+                <CardFooter>
+                  <ButtonGroup spacing="2">
+                    <Button variant="solid" colorScheme="blue">
+                      Buy now
+                    </Button>
+                    <Button variant="ghost" colorScheme="blue">
+                      Add to cart
+                    </Button>
+                  </ButtonGroup>
+                </CardFooter>
+              </Card>
+            ))
+          : "Nenhum Pokemon encontrado"}
+      </SimpleGrid>
+    </>
   );
 };
 
