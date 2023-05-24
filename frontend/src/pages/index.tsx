@@ -1,4 +1,4 @@
-import { Grid, GridItem, Flex, Box } from "@chakra-ui/react";
+import { Grid, GridItem } from "@chakra-ui/react";
 import PokemonCard from "../components/PokemonCard";
 import Pesquisa from "../components/Pesquisa";
 
@@ -16,10 +16,7 @@ export default function Home() {
       fontWeight="bold"
     >
       <GridItem pl="2" bg="orange.300" area={"header"}>
-        <Flex justifyContent="center" alignItems="center">
-          Pokemon
-          <Pesquisa />
-        </Flex>
+        <Pesquisa />
       </GridItem>
       <GridItem pl="2" m={5} area={"main"}>
         <PokemonCard />
