@@ -14,9 +14,12 @@ import {
   Center,
   Input,
   FormControl,
+  Flex,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface Pokemon {
   name: string;
@@ -26,13 +29,14 @@ interface Pokemon {
 }
 
 const PokemonCard = () => {
+  const router = useRouter();
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [searchValue, setSearchValue] = useState("");
 
   async function getPokemons() {
     try {
       const response = await axios.get(
-        "https://pokeapi.co/api/v2/pokemon?limit=50"
+        "https://pokeapi.co/api/v2/pokemon?limit=151"
       );
       const pokemonData = response.data.results;
 
@@ -70,6 +74,19 @@ const PokemonCard = () => {
     );
   });
 
+  const handlePokemonClick = (pokemon: Pokemon) => {
+    router.push({
+      pathname: "/detalhes",
+      query: {
+        name: pokemon.name,
+        id: pokemon.id,
+        types: pokemon.types.join(", "),
+        image: pokemon.image,
+      },
+    });
+    console.log(pokemon);
+  };
+
   return (
     <>
       <FormControl mt={100}>
@@ -89,37 +106,48 @@ const PokemonCard = () => {
         templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
         templateRows="repeat(auto-fill, minmax(300px, 1fr))"
       >
-        {filteredPokemons.length > 0
-          ? filteredPokemons.map((pokemon) => (
-              <Card key={pokemon.name} maxW="sm">
-                <CardBody>
+        {filteredPokemons.length > 0 ? (
+          filteredPokemons.map((pokemon) => (
+            <Card
+              key={pokemon.name}
+              maxW="sm"
+              onClick={() => handlePokemonClick(pokemon)}
+            >
+              <CardBody>
+                <Flex justify="center" bg="#eee" borderRadius="lg">
                   <Image
                     src={pokemon.image}
                     alt={pokemon.name}
                     borderRadius="lg"
+                    width="60%"
+                    height="60%"
+                    justifySelf="center"
                   />
-                  <Stack mt="6" spacing="3">
-                    <Text color="blue.600" fontSize="2xl">
-                      *{pokemon.id.toString().padStart(3, "0")}
-                    </Text>
-                    <Heading size="md">{pokemon.name}</Heading>
-                    <Text>Type: {pokemon.types.join(", ")}</Text>
-                  </Stack>
-                </CardBody>
-                <Divider />
-                <CardFooter>
-                  <ButtonGroup spacing="2">
-                    <Button variant="solid" colorScheme="blue">
-                      Buy now
-                    </Button>
-                    <Button variant="ghost" colorScheme="blue">
-                      Add to cart
-                    </Button>
-                  </ButtonGroup>
-                </CardFooter>
-              </Card>
-            ))
-          : "Nenhum Pokemon encontrado"}
+                </Flex>
+                <Stack mt="6" spacing="3">
+                  <Text color="blue.600" fontSize="2xl">
+                    #{pokemon.id.toString().padStart(3, "0")}
+                  </Text>
+                  <Heading size="md">{pokemon.name}</Heading>
+                  <Text>Tipo: {pokemon.types.join(", ")}</Text>
+                </Stack>
+              </CardBody>
+              <Divider />
+              <CardFooter>
+                <ButtonGroup spacing="2">
+                  <Button variant="solid" colorScheme="blue">
+                    Buy now
+                  </Button>
+                  <Button variant="ghost" colorScheme="blue">
+                    Add to cart
+                  </Button>
+                </ButtonGroup>
+              </CardFooter>
+            </Card>
+          ))
+        ) : (
+          <Text>Nenhum Pokemon encontrado</Text>
+        )}
       </SimpleGrid>
     </>
   );
