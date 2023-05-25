@@ -15,7 +15,7 @@ export default function Home() {
       color="blackAlpha.700"
       fontWeight="bold"
     >
-      <GridItem pl="2" bg="orange.300" area={"header"}>
+      <GridItem pl="2" area={"header"}>
         <Pesquisa />
       </GridItem>
       <GridItem pl="2" m={5} area={"main"}>
