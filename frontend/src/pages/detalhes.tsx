@@ -1,22 +1,3 @@
-// import { useRouter } from "next/router";
-
-// const Detalhes = () => {
-//   const router = useRouter();
-//   const { name, id, types, image } = router.query;
-
-//   return (
-//     <>
-//       <h1>Detalhes do Pokemon</h1>
-//       <h2>Nome: {name}</h2>
-//       <h2>ID: {id}</h2>
-//       <h2>Tipo: {types}</h2>
-//       <img src={image} alt={name} />
-//     </>
-//   );
-// };
-
-// export default Detalhes;
-
 import { Grid, GridItem } from "@chakra-ui/react";
 
 import PokemonDetalhes from "@/components/PokemonDetalhes";
@@ -32,11 +13,12 @@ const Detalhes = () => {
       gap="0"
       color="blackAlpha.700"
       fontWeight="bold"
+      bg="#27282D"
     >
       <GridItem pl="2" h="100vh" area="nav">
         <PokemonDetalhes />
       </GridItem>
-      <GridItem pl="2" h="100vh" bg="pink.300" area="main">
+      <GridItem pl="2" h="100vh" area="main" mt="40px">
         <PokemonStatus />
       </GridItem>
     </Grid>
