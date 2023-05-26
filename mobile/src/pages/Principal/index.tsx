@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
-import { Box, VStack, View, FlatList } from "native-base";
-import axios from "axios";
+import { Box, ScrollView, VStack, Wrap, View, FlatList } from "native-base";
 import PokemonCard from "../../components/PokemonCard";
 import Pesquisa from "../../components/Pesquisa";
+import axios from "axios";
 
 interface Pokemon {
   name: string;
@@ -14,6 +13,7 @@ interface Pokemon {
 
 const Principal = () => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [filteredPokemons, setFilteredPokemons] = useState<Pokemon[]>([]);
 
   async function getPokemons() {
     try {
@@ -39,6 +39,7 @@ const Principal = () => {
       );
 
       setPokemons(updatedPokemons);
+      setFilteredPokemons(updatedPokemons);
     } catch (error) {
       console.log(error);
     }
@@ -48,33 +49,46 @@ const Principal = () => {
     getPokemons();
   }, []);
 
+  const handleFilter = (text: string) => {
+    const filtered = pokemons.filter((pokemon) => {
+      const nameMatch = pokemon.name.toLowerCase().includes(text.toLowerCase());
+      const idMatch = pokemon.id.toString().includes(text);
+      return nameMatch || idMatch;
+    });
+    setFilteredPokemons(filtered);
+  };
+
   return (
     <View flex={1} bg="#27282D">
       <Box h={200} justifyContent="center" alignItems="center">
         <Box w="80%" justifyContent="center" mt="70px">
-          <Pesquisa />
+          <Pesquisa onFilter={handleFilter} />
         </Box>
       </Box>
 
-      <Box h={700}>
-        <FlatList
-          data={pokemons}
-          numColumns={2}
-          renderItem={({ item }) => (
-            <Box mx={2} my={2} flex={1}>
-              <PokemonCard
-                id={item.id}
-                name={item.name}
-                image={item.image}
-                types={item.types}
-              />
-            </Box>
-          )}
-          keyExtractor={(item) => item.id.toString()}
-        />
+      <Box
+        h={700}
+        justifyContent="center"
+        alignItems={filteredPokemons.length === 1 ? "flex-start" : "center"}
+      >
+        <VStack space={2} alignItems="center">
+          <FlatList
+            data={filteredPokemons}
+            numColumns={2}
+            renderItem={({ item }) => (
+              <Wrap>
+                <PokemonCard
+                  id={item.id}
+                  name={item.name}
+                  image={item.image}
+                  types={item.types}
+                />
+              </Wrap>
+            )}
+            keyExtractor={(item) => item.id.toString()}
+          />
+        </VStack>
       </Box>
-
-      <StatusBar style="auto" />
     </View>
   );
 };

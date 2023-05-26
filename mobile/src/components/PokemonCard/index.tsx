@@ -23,7 +23,7 @@ const PokemonCard = ({ id, name, image, types }: Pokemon) => {
   return (
     <Box
       w="160"
-      h="200"
+      h="230"
       rounded="lg"
       overflow="hidden"
       borderColor="coolGray.200"
@@ -42,7 +42,7 @@ const PokemonCard = ({ id, name, image, types }: Pokemon) => {
       }}
     >
       <Box>
-        <AspectRatio w="100%" ratio={16 / 9}>
+        <AspectRatio w="100%" ratio={16 / 13}>
           <Image
             source={{ uri: image }}
             alt={name}
