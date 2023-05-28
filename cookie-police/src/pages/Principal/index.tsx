@@ -1,15 +1,5 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  Text,
-  Image,
-  Stack,
-  Button,
-  Alert,
-} from "@chakra-ui/react";
+import { Box, Flex, Grid, Text, Image, Stack, Button } from "@chakra-ui/react";
 import { Phone, Play } from "@phosphor-icons/react";
-import { useState } from "react";
 import Banner from "../../components/Banner";
 
 function Principal() {
