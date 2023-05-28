@@ -28,10 +28,7 @@ interface PokemonCardProps {
   onPokemonClick: (pokemon: Pokemon) => void;
 }
 
-const PokemonCard: React.FC<PokemonCardProps> = ({
-  pokemon,
-  onPokemonClick,
-}) => {
+const PokemonCard = ({ pokemon, onPokemonClick }: PokemonCardProps) => {
   const handlePokemonClick = () => {
     onPokemonClick(pokemon);
   };
