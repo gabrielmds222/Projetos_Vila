@@ -67,27 +67,26 @@ const PokemonDetalhes = () => {
               {types}
             </Text>
             {pokemonDetails && (
-              <Flex
-                bg="blue.300"
-                w="90%"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Center>
+              <Stack bg="gray.300" w="80%" direction="column">
+                <Center
+                  display="flex"
+                  justifyContent="space-around"
+                  alignItems="center"
+                >
+                  <Text>Altura:</Text>
                   <Text>{pokemonDetails.height} cm</Text>
-                  <Text>Height</Text>
                 </Center>
-                <Divider orientation="vertical" p={4} h="10px" />
-                <Center>
+                <Divider orientation="horizontal" p={4} h="10px" />
+                <Center
+                  display="flex"
+                  justifyContent="space-around"
+                  alignItems="center"
+                >
+                  <Text>Peso:</Text>
                   <Text>{pokemonDetails.weight} kg</Text>
-                  <Text>Weight</Text>
                 </Center>
-                <Divider orientation="vertical" p={4} h="10px" />
-                <Center>
-                  <Text>{pokemonDetails.weight} kg</Text>
-                  <Text>Weight</Text>
-                </Center>
-              </Flex>
+                <Divider orientation="horizontal" p={4} h="10px" />
+              </Stack>
             )}
           </Stack>
         </CardBody>
