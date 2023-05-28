@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Box, ScrollView, VStack, Wrap, View, FlatList } from "native-base";
+import {
+  Box,
+  ScrollView,
+  VStack,
+  Wrap,
+  View,
+  FlatList,
+  Text,
+} from "native-base";
 import PokemonCard from "../../components/PokemonCard";
 import Pesquisa from "../../components/Pesquisa";
 import axios from "axios";
@@ -72,21 +80,25 @@ const Principal = () => {
         alignItems={filteredPokemons.length === 1 ? "flex-start" : "center"}
       >
         <VStack space={2} alignItems="center">
-          <FlatList
-            data={filteredPokemons}
-            numColumns={2}
-            renderItem={({ item }) => (
-              <Wrap>
-                <PokemonCard
-                  id={item.id}
-                  name={item.name}
-                  image={item.image}
-                  types={item.types}
-                />
-              </Wrap>
-            )}
-            keyExtractor={(item) => item.id.toString()}
-          />
+          {filteredPokemons.length === 0 ? (
+            <Text color="#fff">Nenhum Pokemon encontrado!</Text>
+          ) : (
+            <FlatList
+              data={filteredPokemons}
+              numColumns={2}
+              renderItem={({ item }) => (
+                <Wrap>
+                  <PokemonCard
+                    id={item.id}
+                    name={item.name}
+                    image={item.image}
+                    types={item.types}
+                  />
+                </Wrap>
+              )}
+              keyExtractor={(item) => item.id.toString()}
+            />
+          )}
         </VStack>
       </Box>
     </View>
